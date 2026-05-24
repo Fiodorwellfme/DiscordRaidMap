@@ -107,13 +107,6 @@ namespace DiscordRaidMap.Discord
                 username = Settings.MessageName.Value,
                 flags = 4096,
                 content = "",
-                embeds = new[]
-                {
-                    new
-                    {
-                        image = new { url = "attachment://raid-map.png" }
-                    }
-                },
                 attachments = new[]
                 {
                     new { id = 0, filename = "raid-map.png" }

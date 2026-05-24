@@ -94,7 +94,7 @@ namespace DiscordRaidMap.RaidMap
 
         public void SetUpdateInterval(int updateIntervalSeconds)
         {
-            _updateIntervalSeconds = Math.Max(5, updateIntervalSeconds);
+            _updateIntervalSeconds = updateIntervalSeconds;
             _nextUpdateTime = Time.unscaledTime + _updateIntervalSeconds;
         }
 
