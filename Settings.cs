@@ -41,10 +41,10 @@ namespace DiscordRaidMap
                     null,
                     new ConfigurationManagerAttributes { IsAdvanced = false })));
 
-            ConfigEntries.Add(UpdateIntervalSeconds = config.Bind("Discord", "Update Interval Seconds", 15,
+            ConfigEntries.Add(UpdateIntervalSeconds = config.Bind("Discord", "Update Interval Seconds", 5,
                 new ConfigDescription(
                     "How often to edit the Discord map message.",
-                    new AcceptableValueRange<int>(1, 120),
+                    new AcceptableValueRange<int>(2, 120),
                     new ConfigurationManagerAttributes { IsAdvanced = false })));
 
             ConfigEntries.Add(MapTextFont = config.Bind("Map Text", "Map Text Font", "DelaGothicOne-Regular.ttf", 
