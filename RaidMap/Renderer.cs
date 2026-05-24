@@ -46,23 +46,18 @@ namespace DiscordRaidMap.RaidMap
 
             foreach (var marker in snapshot.Markers)
             {
-                var point = Project(snapshot.Map, marker.MapPosition, width, height);
-                switch (marker.Type)
-                {
-                    case RaidMarkerType.Player:
-                        DrawPlayer(pixels, width, height, point, marker.Label, marker.RotationDegrees + snapshot.Map.Rotation);
-                        break;
-                    case RaidMarkerType.DeadPlayer:
-                        DrawDeadPlayer(pixels, width, height, point, marker.Label);
-                        break;
-                    case RaidMarkerType.KilledEnemy:
-                    case RaidMarkerType.KilledBoss:
-                    case RaidMarkerType.Airdrop:
-                    case RaidMarkerType.Extract:
-                    case RaidMarkerType.ExtractRequirements:
-                        DrawMarkerIcon(pixels, width, height, point, marker.Type);
-                        break;
-                }
+                if (marker.Type == RaidMarkerType.Player)
+                    continue;
+
+                DrawRaidMarker(snapshot, pixels, width, height, marker);
+            }
+
+            foreach (var marker in snapshot.Markers)
+            {
+                if (marker.Type != RaidMarkerType.Player)
+                    continue;
+
+                DrawRaidMarker(snapshot, pixels, width, height, marker);
             }
 
             if (!string.IsNullOrWhiteSpace(snapshot.TimeRemaining))
@@ -71,6 +66,36 @@ namespace DiscordRaidMap.RaidMap
             }
 
             return EncodePng(pixels, width, height);
+        }
+
+        private void DrawRaidMarker(RaidSnapshot snapshot, Color32[] pixels, int width, int height, RaidMarker marker)
+        {
+            var point = Project(snapshot.Map, marker.MapPosition, width, height);
+
+            switch (marker.Type)
+            {
+                case RaidMarkerType.KilledEnemy:
+                case RaidMarkerType.KilledBoss:
+                case RaidMarkerType.Airdrop:
+                case RaidMarkerType.Extract:
+                case RaidMarkerType.ExtractRequirements:
+                    DrawMarkerIcon(pixels, width, height, point, marker.Type);
+                    break;
+
+                case RaidMarkerType.DeadPlayer:
+                    DrawDeadPlayer(pixels, width, height, point, marker.Label);
+                    break;
+
+                case RaidMarkerType.Player:
+                    DrawPlayer(
+                        pixels,
+                        width,
+                        height,
+                        point,
+                        marker.Label,
+                        marker.RotationDegrees + snapshot.Map.Rotation);
+                    break;
+            }
         }
 
         private CpuImage LoadBackground(MapDefinition map)
